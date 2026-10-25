@@ -5,13 +5,13 @@ from pathlib import Path
 
 UI_CONFIG = Path(os.environ.get('XDG_CONFIG_HOME', str(Path.home() / '.config'))) / 'attack-shark-r1-control/ui.json'
 
-PALETTES = {
-    'dark': dict(bg='#0e1619', card='#172226', card2='#213136', border='#30454a', text='#edf6f5',
-                 muted='#93aaa9', accent='#42c9ad', accent_text='#09251f', ok='#45bd91',
-                 warn='#e0a458', danger='#ff8f98', track='#263b3e', hover='#2b4448'),
-    'light': dict(bg='#f0f6f5', card='#ffffff', card2='#eaeefa', border='#d2d9ec', text='#1b2236',
-                  muted='#5d6a88', accent='#168571', accent_text='#ffffff', ok='#1f9d72',
-                  warn='#b97a1d', danger='#c93a46', track='#dfe5f6', hover='#dde4f8'),
+PALETTES = {  # cores inspiradas no macOS (Big Sur em diante)
+    'dark': dict(bg='#1c1c1e', card='#2c2c2e', card2='#3a3a3c', border='#48484a', text='#f5f5f7',
+                 muted='#98989f', accent='#0a84ff', accent_text='#ffffff', ok='#30d158',
+                 warn='#ff9f0a', danger='#ff453a', track='#3a3a3c', hover='#48484a'),
+    'light': dict(bg='#f2f2f7', card='#ffffff', card2='#e9e9ee', border='#d8d8de', text='#1d1d1f',
+                  muted='#6e6e73', accent='#007aff', accent_text='#ffffff', ok='#34c759',
+                  warn='#ff9500', danger='#ff3b30', track='#e5e5ea', hover='#dcdce2'),
 }
 
 
@@ -35,7 +35,7 @@ def stylesheet(name):
     p = PALETTES[name]
     assets = Path(__file__).with_name('assets').as_posix()
     return f'''
-    QWidget {{background:{p['bg']};color:{p['text']};font-size:14px}}
+    QWidget {{background:{p['bg']};color:{p['text']};font-family:'SF Pro Text','Inter','Helvetica Neue','Noto Sans',sans-serif;font-size:14px}}
     QLabel {{background:transparent}}
     QLabel#title {{font-size:29px;font-weight:700;letter-spacing:-0.5px}}
     QLabel#brand {{font-size:20px;font-weight:700}}
@@ -54,11 +54,11 @@ def stylesheet(name):
     QFrame#card {{background:{p['card']};border:1px solid {p['border']};border-radius:16px}}
     QFrame#card QLabel, QFrame#card QWidget#plain {{background:transparent}}
     QFrame#card QLabel#pill {{background:{p['card2']}}}
-    QPushButton, QComboBox, QSpinBox, QDoubleSpinBox {{background:{p['card2']};border:1px solid {p['border']};border-radius:8px;padding:8px 12px;min-height:20px}}
+    QPushButton, QComboBox, QSpinBox, QDoubleSpinBox {{background:{p['card2']};border:1px solid {p['border']};border-radius:7px;padding:6px 14px;min-height:20px}}
     QPushButton:hover, QComboBox:hover {{background:{p['hover']}}}
     QPushButton:focus, QComboBox:focus, QSpinBox:focus, QDoubleSpinBox:focus {{border:1px solid {p['accent']}}}
     QPushButton:disabled {{color:{p['muted']}}}
-    QPushButton#primary {{background:{p['accent']};color:{p['accent_text']};border:none;font-weight:700;padding:11px 22px}}
+    QPushButton#primary {{background:{p['accent']};color:{p['accent_text']};border:none;font-weight:600;padding:8px 22px}}
     QPushButton#ghost {{background:transparent}}
     QSpinBox, QDoubleSpinBox {{padding:9px 22px 9px 12px}}
     QComboBox::drop-down {{border:none;width:28px}}
@@ -70,9 +70,12 @@ def stylesheet(name):
     QComboBox QAbstractItemView {{background:{p['card']};selection-background-color:{p['accent']};border:1px solid {p['border']}}}
     QWidget#plain, QStackedWidget, QTabBar {{background:transparent}}
     QTabWidget::pane {{border:none;top:8px}}
-    QTabBar::tab {{background:transparent;color:{p['muted']};padding:9px 18px;margin-right:4px;border-radius:8px;font-weight:600}}
-    QTabBar::tab:selected {{background:{p['card']};color:{p['text']};border:1px solid {p['border']}}}
+    QTabBar::tab {{background:{p['card2']};color:{p['muted']};padding:6px 18px;margin:0;border:1px solid {p['border']};font-weight:500}}
+    QTabBar::tab:first {{border-top-left-radius:7px;border-bottom-left-radius:7px}}
+    QTabBar::tab:last {{border-top-right-radius:7px;border-bottom-right-radius:7px}}
+    QTabBar::tab:selected {{background:{p['accent']};color:{p['accent_text']};border-color:{p['accent']}}}
     QTabBar::tab:hover:!selected {{color:{p['text']}}}
+    QTabBar {{qproperty-drawBase:0}}
     QScrollArea {{border:none}}
     QScrollBar:vertical {{background:transparent;width:8px;margin:2px}}
     QScrollBar::handle:vertical {{background:{p['border']};border-radius:4px;min-height:32px}}
